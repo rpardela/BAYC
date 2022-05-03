@@ -192,7 +192,9 @@ start();
 
 async function start() {
     await bayc_bc_api.init();
-    aggregateData.aggregate();
+    aggregateData.aggregateFromTatum();
+    //aggregateData.aggregateFromBaseUri();
+    //aggregateData.aggregate();
 }
 
 

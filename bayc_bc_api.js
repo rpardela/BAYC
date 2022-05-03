@@ -91,6 +91,18 @@ module.exports = {
                 })
         });
     },
+    baseURI: function () {
+        return new Promise(async (resolve, reject) => {
+            this.contract.baseURI()
+                .then((result) => {
+                    resolve(result);
+                })
+                .catch(err => {
+                    console.error(err.reason, "base URI");
+                    reject(err.reason);
+                })
+        });
+    },
     tokenURI: function (_tokenID) {
         return new Promise(async (resolve, reject) => {
             let tokenID = _tokenID;

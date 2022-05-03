@@ -16,6 +16,10 @@
                 "accountMain": "",
                 "pathToPassKeyAccountProd": "",
                 "addressProd": "https://ipfs.io/ipfs/"
+            },
+            "tatum": {
+                "address": "https://api-us-west1.tatum.io/v3/nft/collection/ETH/",
+                "x-api-key": ""
             }
         }
     }

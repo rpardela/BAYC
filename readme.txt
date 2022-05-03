@@ -3,3 +3,4 @@ Install:
 
 Start app:
 - npm run start
+- open http://localhost:4333

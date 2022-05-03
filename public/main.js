@@ -25,8 +25,8 @@ function getAggregatedData() {
 }
 
 function createFilter(aggData, allTokens) {
-    console.log('create filter');
-    console.log(aggData);
+    //console.log('create filter');
+    //console.log(aggData);
     let filterBAYC = document.getElementById('filterBAYC');
     filterBAYC.innerHTML = '';
     let accordion = document.createElement('div');
@@ -37,7 +37,7 @@ function createFilter(aggData, allTokens) {
     let i = 0;
     for (const [key, value] of Object.entries(aggData)) {
         i++;
-        console.log(value, key);
+        //console.log(value, key);
         let count = Object.keys(value).length;
         //console.log(Object.keys(aggData)[i]);
         let collapseID = 'trait' + i;
@@ -139,10 +139,13 @@ function createFilter(aggData, allTokens) {
     filterBAYC.appendChild(accordion);
 }
 
+/**
+ * now doesn't work with new data from tatum
+ */
 function refreshListBAYC_OR(allTokens) {
-    console.log('refreshListBAYC');
-    console.log(filterBAYCData);
-    console.log(allTokens);
+    //console.log('refreshListBAYC');
+    //console.log(filterBAYCData);
+    //console.log(allTokens);
     let filteredList = [];
     for (let i = 0; i < allTokens.length; i ++) {
         let token = allTokens[i];
@@ -165,17 +168,17 @@ function refreshListBAYC_OR(allTokens) {
 }
 
 function refreshListBAYC_AND(allTokens) {
-    console.log('refreshListBAYC');
-    console.log(filterBAYCData);
-    console.log(allTokens);
+    //console.log('refreshListBAYC');
+    //console.log(filterBAYCData);
+    //console.log(allTokens);
     let filteredList = [];
     let traitCount = 0;
     let maxTrait = 0;
     for (let i = 0; i < allTokens.length; i ++) {
         let tokenToAdd = true;
         let token = allTokens[i];
-        let tokenAttributes = token.meta.attributes;
-
+        let tokenAttributes = token.metadata.attributes;
+        //console.log(tokenAttributes);
         traitCount = 0;
         maxTrait = 0;
         for (const [k, v] of Object.entries(filterBAYCData)) {
@@ -200,8 +203,8 @@ function refreshListBAYC_AND(allTokens) {
         }
         //if (tokenToAdd && (isTrait >= Object.keys(filterBAYCData).length)) {
         if (tokenToAdd && (traitCount >= maxTrait) && (maxTrait > 0)) {
-            console.log('token pasuje do wszystkich');
-            console.log(tokenAttributes);
+            //console.log('token pasuje do wszystkich');
+            //console.log(tokenAttributes);
             filteredList.push(token);
         }
 
@@ -211,8 +214,8 @@ function refreshListBAYC_AND(allTokens) {
 }
 
 function showListTokens(list) {
-    console.log('showListTokens');
-    console.log(list);
+    //console.log('showListTokens');
+    //console.log(list);
     let listCount = document.getElementById('listCount');
     listCount.textContent = 'Filtered: ' + list.length;
     let listBAYC = document.getElementById('listBAYC');
@@ -237,13 +240,13 @@ function setItemPanel(data) {
 
     let el_h5 = document.createElement('h5');
     el_h5.classList.add('mb-1');
-    el_h5.textContent = 'Token no: ' + data.id;
+    el_h5.textContent = 'Token no: ' + data.tokenId;
 
     /*let el_img = document.createElement('img');
     el_img.src = data.meta.imageUrl;*/
 
     let el_img = document.createElement('a');
-    el_img.href = data.meta.imageUrl;
+    el_img.href = data.imageUrl;
     el_img.target = '_blank';
     el_img.textContent = 'Show image';
 
