@@ -33,14 +33,56 @@ module.exports = {
         return duringAggregate;
     },
     aggregateFromTatum: async function() {
+        let howManyReq = 10;
+        let reqCount = 0;
         return new Promise(async (resolve, reject) => {
             console.log('Retrieving tokens metadata ...');
             let totalSupply = await bayc_bc_api.totalSupply();
             let tatumUri = config.token.contractAddressProd + '?pageSize=50'
+            let i = totalSupply;
+            let finished = false;
+
             for (let i = 0; i <= totalSupply; i += 50) {
                 duringAggregate = true;
-                let res = await this.getFromTatum(tatumUri + '&offset=' + i);
-                if (res.err) {
+                //let res = await this.getFromTatum(tatumUri + '&offset=' + i);
+                if (howManyReq >= reqCount) {
+                    //console.log(reqCount, "reqcount");
+                    //console.log(howManyReq, 'howManyReq');
+                    reqCount++;
+                    this.getFromTatum(tatumUri + '&offset=' + i)
+                        .then(res => {
+                            reqCount--;
+                            for (let k = 0; k < res.result.length; k++) {
+                                //console.log(res.result[k]);
+                                let metadata = res.result[k].metadata;
+                                metadata.imageUrl = config.durableMedium.addressProd + metadata.metadata.image.substring(7, metadata.metadata.image.length);
+                                allTokens.push(metadata);
+                                for (let k = 0; k < metadata.metadata.attributes.length; k++) {
+                                    let data = metadata.metadata.attributes[k];
+                                    if (!aggregatedDataArray[data['trait_type']]) {
+                                        aggregatedDataArray[data['trait_type']] = {};
+                                    }
+                                    if (!aggregatedDataArray[data['trait_type']][data['value']]) {
+                                        aggregatedDataArray[data['trait_type']][data['value']] = 0;
+                                    }
+                                    aggregatedDataArray[data['trait_type']][data['value']]++;
+                                }
+                            }
+                            console.log(allTokens.length, "tokens");
+                        })
+                        .catch(err => {
+                            i -= 50;
+                            reqCount--;
+                            console.error(err);
+                            //reject(err);
+                        })
+                } else {
+                    i -= 50;
+                    await sleep(500);
+                    //console.log(i, 'i');
+                    //reqCount --;
+                }
+                /*if (res.err) {
                     console.error(res);
                 } else {
                     for (let k = 0;k < res.result.length; k ++) {
@@ -60,8 +102,7 @@ module.exports = {
                         }
                     }
                 }
-                console.log(i, "tokens");
-
+                console.log(i, "tokens");*/
             }
             duringAggregate = false;
             resolve(aggregatedDataArray)
@@ -182,17 +223,23 @@ module.exports = {
             err: '',
             result: ''
         };
-        let response = await request(requestSettings).catch((err) => {
-            console.error(err, 'request error');
-            objRet.err = err;
-        });
+        return new Promise(async (resolve, reject) => {
+            let response = await request(requestSettings).catch((err) => {
+                console.error(err, 'request error');
+                objRet.err = err;
+                reject(objRet);
+            });
 
-        if (response) {
-            let body = response.body;
-            objRet.result = JSON.parse(body);
-        }
-        return objRet;
+            if (response) {
+                let body = response.body;
+                objRet.result = JSON.parse(body);
+            }
+            //return objRet;
+            resolve(objRet)
+        })
     }
 };
+
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 
