@@ -33,7 +33,8 @@ module.exports = {
         return duringAggregate;
     },
     aggregateFromTatum: async function() {
-        let howManyReq = 10;
+        //console.log(new Date(Date.now()).toLocaleString());
+        let howManyReq = config.tatum.howManyReq;
         let reqCount = 0;
         return new Promise(async (resolve, reject) => {
             console.log('Retrieving tokens metadata ...');
@@ -78,7 +79,7 @@ module.exports = {
                         })
                 } else {
                     i -= 50;
-                    await sleep(500);
+                    await sleep(config.tatum.timeout);
                     //console.log(i, 'i');
                     //reqCount --;
                 }
@@ -104,6 +105,7 @@ module.exports = {
                 }
                 console.log(i, "tokens");*/
             }
+            //console.log(new Date(Date.now()).toLocaleString());
             duringAggregate = false;
             resolve(aggregatedDataArray)
         });

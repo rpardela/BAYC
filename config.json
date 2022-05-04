@@ -19,7 +19,9 @@
             },
             "tatum": {
                 "address": "https://api-us-west1.tatum.io/v3/nft/collection/ETH/",
-                "x-api-key": ""
+                "x-api-key": "",
+                "howManyReq": 15,
+                "timeout": 200
             }
         }
     }
