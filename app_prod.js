@@ -1,6 +1,6 @@
 /**
  *
- * GAZOOMIA TEST DEV
+ * BAYC TEST DEV
  *
  */
 
@@ -17,7 +17,7 @@ const helmet = require('helmet');
 const compression = require('compression');
 const crypto = require('crypto');
 
-console.log('GAZOOMIA Robert Pardela' + version, "Start server");
+console.log('BAYC Robert Pardela' + version, "Start server");
 
 let configTmp = JSON.parse(fs.readFileSync('./config.json').toString());
 let configGlobal = configTmp.configuration;
@@ -64,7 +64,7 @@ process.on('warning', (warning) => {
 
 app.use(helmet());
 app.disable('x-powered-by');
-app.use(helmet.referrerPolicy({policy: 'same-origin'}));
+app.use(helmet.referrerPolicy({ policy: 'same-origin' }));
 app.use((req, res, next) => {
     res.locals.cspNonce = crypto.randomBytes(config.CSPNonceLength).toString("hex").substring(0, config.CSPNonceLength);
     next();
@@ -88,7 +88,7 @@ app.use(helmet.hsts({
     preload: true
 }));
 
-app.use(express.raw({limit: config.maxFileSize}));
+app.use(express.raw({ limit: config.maxFileSize }));
 
 let headersForRequest = [];
 app.use((req, res, next) => {
@@ -102,7 +102,7 @@ app.use((req, res, next) => {
 
     bayc_bc_api.headersForRequest = headersForRequest;
 
-    bodyParser.raw({limit: '1mb'})(req, res, err => {
+    bodyParser.raw({ limit: '1mb' })(req, res, err => {
         if (err) {
             console.error(err, "bodyParser raw");
             let ip_in = req.connection.remoteAddress
@@ -117,7 +117,7 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
-    bodyParser.json({limit: '1mb', extended: true})(req, res, err => {
+    bodyParser.json({ limit: '1mb', extended: true })(req, res, err => {
         if (err) {
             console.error(err, "bodyParser JSON");
             let ip_in = req.connection.remoteAddress
@@ -131,7 +131,7 @@ app.use((req, res, next) => {
     });
 });
 app.use((req, res, next) => {
-    bodyParser.urlencoded({limit: '1mb', extended: false, parameterLimit: 10})(req, res, err => {
+    bodyParser.urlencoded({ limit: '1mb', extended: false, parameterLimit: 10 })(req, res, err => {
         if (err) {
             console.error(err, "bodyParser urlencoded");
             let ip_in = req.connection.remoteAddress
@@ -176,7 +176,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.use(compression({filter: shouldCompress}));
+app.use(compression({ filter: shouldCompress }));
 
 function shouldCompress(req, res) {
     if (req.headers['x-no-compression']) {
@@ -243,7 +243,7 @@ app.use(function (req, res, next) {
         || (req.connection.socket ? req.connection.socket.remoteAddress : null);// || req.ip;
 
     //console.warning( 'No API: ' + req.path + ' method: ' + req.method + ', from: ' + ip, '404');
-    console.warning('No API: ' + req.method + ': ' + req.path + ', from: ' + ip, '404');
+    console.warn('No API: ' + req.method + ': ' + req.path + ', from: ' + ip, '404');
     // notice tu celowo nie ma releaseThrottling, ponieważ może być to próba włamania i szybko trzeba zablokować dostęp.
     // notice w/w może mieć wpływ na zablokowanie całego API - dla * rozliczanie per *, a nie per adres
     // notice dla w/w trzeba dodać zawsze jeden serwiskowy adres do throtllingu
