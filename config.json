@@ -1,0 +1,28 @@
+{
+    "configuration": {
+        "config": {
+            "serverIP": "localhost",
+            "serverPort": 4333,
+            "CSPNonceLength": 128,
+            "chain": {
+                "bcAddressProd": "https://mainnet.infura.io/v3/b583160797e24b88a643ad9a38b0f5aa",
+                "chainIDProd": 137,
+                "bcGetABI": "https://api.etherscan.io/"
+            },
+            "token": {
+                "contractAddressProd": "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D"
+            },
+            "durableMedium": {
+                "accountMain": "",
+                "pathToPassKeyAccountProd": "",
+                "addressProd": "https://ipfs.io/ipfs/"
+            },
+            "tatum": {
+                "address": "https://api-us-west1.tatum.io/v3/nft/collection/ETH/",
+                "x-api-key": "",
+                "howManyReq": 15,
+                "timeout": 200
+            }
+        }
+    }
+}
