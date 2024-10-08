@@ -12,7 +12,7 @@
 		"body-parser": "^1.19.2",
 		"buffer": "^6.0.3",
 		"compression": "^1.7.4",
-		"express": "^4.17.3",
+		"express": "^4.21.1",
 		"got": "^11.8.3",
 		"helmet": "^5.0.2",
 		"process": "^0.11.10",
